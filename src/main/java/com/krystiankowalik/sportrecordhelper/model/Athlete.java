@@ -1,7 +1,11 @@
 package com.krystiankowalik.sportrecordhelper.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +14,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
+@Entity(name = "athlete")
 public class Athlete {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "country")
     private String country;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete")
     private List<Record> records;
 
     public void addRecord(Record record) {

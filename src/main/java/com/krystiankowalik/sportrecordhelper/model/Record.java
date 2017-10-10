@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,13 +14,28 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 
+@Entity(name = "records")
 public class Record {
 
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "date")
     private LocalDate date;
 
+    @Column(name = "distance")
     private int distance;
 
+    @Column(name = "time")
     private BigDecimal time;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Athlete athlete;
+
+    //private BigDecimal thousandMetersTime;
 
     @Override
     public String toString() {
