@@ -5,6 +5,10 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static com.krystiankowalik.sportrecordhelper.util.Constants.AFTER;
+import static com.krystiankowalik.sportrecordhelper.util.Constants.BEFORE;
+import static com.krystiankowalik.sportrecordhelper.util.Constants.EQUAL;
+
 public class Record implements Comparable<Record> {
 
     private LocalDate date;
@@ -82,11 +86,16 @@ public class Record implements Comparable<Record> {
     @Override
     public int compareTo(Record anotherRecord) {
 
+        if (this == anotherRecord) return EQUAL;
+
         if (anotherRecord == null) {
-            return 0;
+            return BEFORE;
         }
         if (anotherRecord.getDate() == null) {
-            return 0;
+            return BEFORE;
+        }
+        if (this.date == null) {
+            return AFTER;
         }
 
         return -anotherRecord.getDate().compareTo(this.date);

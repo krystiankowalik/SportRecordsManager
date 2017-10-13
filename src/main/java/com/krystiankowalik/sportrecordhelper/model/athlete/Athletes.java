@@ -1,5 +1,8 @@
 package com.krystiankowalik.sportrecordhelper.model.athlete;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,13 +17,12 @@ public class Athletes {
     public void add(Athlete athlete) {
         athletes.add(athlete);
 
-        String country = athlete.getCountry();
+        String countryName = athlete.getCountry();
 
-        if (countries.containsKey(country)) {
-            int currentCount = countries.get(country);
-            countries.put(country, ++currentCount);
+        if (countries.containsKey(countryName)) {
+            countries.put(countryName, countries.get(countryName) + 1);
         } else {
-            countries.put(country, 1);
+            countries.put(countryName, 1);
         }
     }
 
@@ -30,8 +32,49 @@ public class Athletes {
     }
 
 
-    public Stream<Athlete> getAthletes(){
+    public Stream<Athlete> getAthletes() {
         return athletes.stream();
+    }
+
+    public void printAllThousandMetersTimes() {
+        System.out.println(System.lineSeparator());
+        System.out.println("Listed athletes: ");
+        System.out.println(System.lineSeparator());
+
+        StringBuilder sb = new StringBuilder();
+        athletes.forEach(a -> {
+            sb.setLength(0);
+            sb.append(a.getName());
+            sb.append(" - 1000m w ");
+            sb.append(a.getRecords()
+                    .stream()
+                    .map(Record::getThousandMetersTimeEquivalent)
+                    .mapToDouble(BigDecimal::longValue)
+                    .average()
+                    .orElse(0));
+            sb.append("s");
+            System.out.println(sb.toString());
+
+        });
+    }
+
+    public void printTopCountries() {
+
+    }
+
+    public void printFirstRecordDate() {
+        System.out.println(System.lineSeparator());
+
+        athletes.stream()
+                .flatMap(r -> r.getRecords()
+                        .stream())
+                .findFirst()
+                .ifPresent(record -> {
+                    LocalDate date = record.getDate();
+                    if (date != null) {
+                        System.out.println("Pierwszy wynik zarejestrowano: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                    }
+                });
     }
 
     @Override

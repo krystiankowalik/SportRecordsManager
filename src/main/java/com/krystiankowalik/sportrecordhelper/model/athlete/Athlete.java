@@ -4,6 +4,10 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
+import static com.krystiankowalik.sportrecordhelper.util.Constants.AFTER;
+import static com.krystiankowalik.sportrecordhelper.util.Constants.BEFORE;
+import static com.krystiankowalik.sportrecordhelper.util.Constants.EQUAL;
+
 public class Athlete implements Comparable<Athlete> {
 
     private String name;
@@ -45,20 +49,26 @@ public class Athlete implements Comparable<Athlete> {
 
     @Override
     public int compareTo(Athlete anotherAthlete) {
+
+        if (this == anotherAthlete) return EQUAL;
+
         if (anotherAthlete == null) {
-            return 0;
-        }
-        if (this.records == null) {
-            return 0;
+            return BEFORE;
         }
         if (anotherAthlete.getRecords() == null) {
-            return 0;
+            return BEFORE;
         }
-        if (!anotherAthlete.getRecords().stream().findFirst().isPresent() |
-                !this.records.stream().findFirst().isPresent()) {
-            return 0;
+        if (this.records == null) {
+            return AFTER;
         }
-        return anotherAthlete.getRecords().stream().findFirst().get()
+        if (!anotherAthlete.getRecords().stream().findFirst().isPresent()) {
+            return BEFORE;
+        }
+        if (!this.records.stream().findFirst().isPresent()) {
+            return AFTER;
+        }
+
+        return -anotherAthlete.getRecords().stream().findFirst().get()
                 .compareTo(this.records.stream().findFirst().get());
     }
 
