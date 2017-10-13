@@ -1,22 +1,22 @@
 package com.krystiankowalik.sportrecordhelper;
 
-import com.krystiankowalik.sportrecordhelper.config.DatabaseConfig;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 public class MainApp {
 
     public static void main(String[] args) {
 
-//        System.out.println(new FileHelper("/home/wd40/IdeaProjects/Many-to-Many sample/sportrecordhelper/src/main/resources/dane.txt").read());
-        //System.out.println(new FileHelper().readFile(new File("dane.txt")));
+        Control control = new Control();
 
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class);
+        switch (args.length) {
+            case 2:
+                control.run(args[0], args[1]);
+                break;
+            case 1:
+                control.run(args[0], "");
+            case 0:
+                control.run("", "");
+            default:
+                System.out.println("Wrong number of parameters: " + args.length);
+        }
 
-        context.getBean(Control.class).run();
-
-
-        /*Control control = new Control();
-
-        control.run();*/
     }
 }
