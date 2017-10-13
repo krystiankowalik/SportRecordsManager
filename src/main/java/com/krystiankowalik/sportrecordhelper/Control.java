@@ -1,57 +1,72 @@
 package com.krystiankowalik.sportrecordhelper;
 
 
-import com.krystiankowalik.sportrecordhelper.logic.AthleteParser;
-import com.krystiankowalik.sportrecordhelper.logic.FileHelper;
+import com.krystiankowalik.sportrecordhelper.logic.io.FileHelper;
+import com.krystiankowalik.sportrecordhelper.logic.io.StreamFileHelper;
+import com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser;
+import com.krystiankowalik.sportrecordhelper.logic.parser.IterativeAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athlete;
+import com.krystiankowalik.sportrecordhelper.model.input.InputTypeParameter;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Control {
 
-    public static final String READ_FILE = "-f";
-    public static final String READ_DIRECTORY = "-d";
-    public static final String HELP = "-h";
-    public static final String NO_INPUT = "";
+    private FileHelper fileHelper;
 
-    public void run(String inputTypeParameter, String inputSourceParameter) {
+    private InputTypeParameter inputTypeParameter;
+    private File source;
 
-        switch (inputTypeParameter) {
-            case READ_FILE:
-                readFile(inputSourceParameter);
-                break;
-            case READ_DIRECTORY:
-                readDirectory(inputSourceParameter);
-                break;
-            case HELP:
-                displayHelp();
-                break;
-            case NO_INPUT:
-                displayHelp();
-                break;
+    public Control(InputTypeParameter inputTypeParameter, String inputSourceParameter) {
+        this.inputTypeParameter = inputTypeParameter;
+        this.source = new File(inputSourceParameter);
+        this.fileHelper = new StreamFileHelper();
+    }
 
-            default:
-                System.out.println("Unknown input type parameter: " + inputTypeParameter);
+    public void run() {
+
+        if (source.exists()) {
+
+            switch (inputTypeParameter) {
+                case READ_FILE:
+                    readFile(source);
+                    break;
+                case READ_DIRECTORY:
+                    readDirectory(source);
+                    break;
+                case HELP:
+                    displayHelp();
+                    break;
+                case NO_INPUT:
+                    displayHelp();
+                    break;
+
+                default:
+                    System.out.println("Unknown input type parameter: " + inputTypeParameter);
+            }
+        } else {
+            System.out.println("The source does not exist: " + source);
         }
     }
 
-    private void readFile(String inputSourceParameter) {
-        System.out.println("Reading file: " + inputSourceParameter);
+    private void readFile(File sourceFile) {
+        System.out.println("Reading file: " + sourceFile);
 
-        List<String> lines = FileHelper.readAllLines(inputSourceParameter);
+        List<String> lines = fileHelper.readAllLines(sourceFile);
 
-        AthleteParser athleteParser = new AthleteParser(lines);
+        AthleteParser athleteParser = new IterativeAthleteParser();
 
-        System.out.println(athleteParser.parseAthletes());
+        System.out.println(athleteParser.parseAthletes(lines));
 
 
         System.out.println(System.lineSeparator());
         //System.out.println(athleteParser.parseAthletes().getAthletes().findFirst());
 
-        List<Athlete> athletes = athleteParser.parseAthletes().getAthletes().collect(Collectors.toList());
+        List<Athlete> athletes = athleteParser.parseAthletes(lines).getAthletes().collect(Collectors.toList());
 
-        athletes.sort((a1,a2)->a1.compareTo(a2));
+        athletes.sort((a1, a2) -> a1.compareTo(a2));
 
         System.out.println(athletes);
 
@@ -63,7 +78,7 @@ public class Control {
 
     }
 
-    private void readDirectory(String inputSourceParameter) {
+    private void readDirectory(File directory) {
         System.out.println("Reading dir...");
     }
 

@@ -1,4 +1,4 @@
-package com.krystiankowalik.sportrecordhelper.logic;
+package com.krystiankowalik.sportrecordhelper.logic.parser;
 
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athlete;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athletes;
@@ -11,17 +11,10 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-public final class AthleteParser {
+public final class IterativeAthleteParser implements AthleteParser {
 
-    public static final String ATHLETE_DELIMITER = "-";
-
-    private List<String> allLines;
-
-    public AthleteParser(List<String> allLines) {
-        this.allLines = allLines;
-    }
-
-    public Athletes parseAthletes() {
+    @Override
+    public Athletes parseAthletes(List<String> allLines) {
 
         List<String> singleAthleteLines = new ArrayList<>();
         Athletes athletes = new Athletes(new TreeSet<>());
