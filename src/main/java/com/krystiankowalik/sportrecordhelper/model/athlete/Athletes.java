@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Athletes {
 
@@ -35,6 +36,10 @@ public class Athletes {
 
     }
 
+    public void addAll(Athletes athletes) {
+        athletes.getAthletes().forEach(this::add);
+    }
+
     private Country getCountry(final Country country) {
 
         Country returnCountry = null;
@@ -52,11 +57,9 @@ public class Athletes {
     }
 
 
-/*
     public Stream<Athlete> getAthletes() {
         return athletes.stream();
     }
-*/
 
     public void printAllThousandMetersTimes() {
         System.out.println(System.lineSeparator());
@@ -105,12 +108,18 @@ public class Athletes {
 
         final StringBuilder sb = new StringBuilder();
 
+        sb.append("Top ");
+        sb.append(requestedTopCount);
+        sb.append(" Kraje");
+        sb.append(System.lineSeparator());
+
         topCountries.forEach(c -> {
+            sb.append("- ");
             sb.append(c.getName());
             sb.append(" (");
             sb.append(c.getCount());
             sb.append(")");
-            sb.append("; ");
+            sb.append(System.lineSeparator());
         });
 
         System.out.println(sb.toString());

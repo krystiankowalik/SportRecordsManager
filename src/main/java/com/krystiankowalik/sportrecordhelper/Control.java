@@ -10,6 +10,7 @@ import com.krystiankowalik.sportrecordhelper.model.input.InputTypeParameter;
 
 import java.io.File;
 import java.util.List;
+import java.util.TreeSet;
 
 public final class Control {
 
@@ -31,10 +32,10 @@ public final class Control {
 
         switch (inputTypeParameter) {
             case READ_FILE:
-                readFile(source);
+                printStatistics(readFile(source));
                 break;
             case READ_DIRECTORY:
-                readDirectory(source);
+                printStatistics(readDirectory(source));
                 break;
             case HELP:
                 displayHelp();
@@ -48,47 +49,37 @@ public final class Control {
         }
     }
 
-    private void readFile(File sourceFile) {
+    private Athletes readFile(File sourceFile) {
         System.out.println("Reading file: " + sourceFile);
+
+        Athletes athletes = null;
+
 
         if (sourceFile.exists()) {
 
-
             List<String> lines = fileHelper.readAllLines(sourceFile);
 
-            /*
+            athletes = athleteParser.parseAthletes(lines);
 
-            System.out.println(athleteParser.parseAthletes(lines));
-
-
-            System.out.println(System.lineSeparator());
-            //System.out.println(athleteParser.parseAthletes().getAthletes().findFirst());
-
-            //List<Athlete> athletes = athleteParser.parseAthletes(lines).getAthletes().collect(Collectors.toList());
-
-            //athletes.sort((a1, a2) -> a1.compareTo(a2));
-
-            //System.out.println(athletes);
-
-            System.out.println(System.lineSeparator());
-*/
-
-
-            Athletes athletes =athleteParser.parseAthletes(lines);
-
-            athletes.printAllThousandMetersTimes();
-            athletes.printFirstRecordDate();
-            athletes.printTopCountries(3);
-            //System.out.println(athletes.stream().map(a->a.getRecords()).collect(Collectors.toList()).stream().sorted().collect(Collectors.toList()));
-//        System.out.println(athletes.get(0).getRecords());
 
         } else {
             System.out.println("The source file: " + sourceFile + " doesn't exist.");
         }
+
+        return athletes;
     }
 
-    private void readDirectory(File directory) {
+    private Athletes readDirectory(File directory) {
         System.out.println("Reading dir...");
+
+        Athletes athletes = new Athletes(new TreeSet<>());
+
+        fileHelper
+                .getAllFilesInDirectory(directory)
+                .forEach(f -> athletes.addAll(readFile(f)));
+
+        return athletes;
+
     }
 
     private void displayHelp() {
@@ -110,6 +101,12 @@ public final class Control {
         sb.append("Enjoy :)");
 
         System.out.println(sb.toString());
+    }
+
+    private void printStatistics(Athletes athletes) {
+        athletes.printAllThousandMetersTimes();
+        athletes.printFirstRecordDate();
+        athletes.printTopCountries(3);
     }
 
 
