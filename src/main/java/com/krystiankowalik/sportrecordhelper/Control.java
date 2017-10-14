@@ -78,7 +78,7 @@ public final class Control {
 
             athletes.printAllThousandMetersTimes();
             athletes.printFirstRecordDate();
-            athletes.printTopCountries();
+            athletes.printTopCountries(3);
             //System.out.println(athletes.stream().map(a->a.getRecords()).collect(Collectors.toList()).stream().sorted().collect(Collectors.toList()));
 //        System.out.println(athletes.get(0).getRecords());
 

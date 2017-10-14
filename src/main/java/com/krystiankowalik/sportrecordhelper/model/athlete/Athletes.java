@@ -3,38 +3,60 @@ package com.krystiankowalik.sportrecordhelper.model.athlete;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class Athletes {
 
     private Set<Athlete> athletes;
-    private Map<String, Integer> countries;
+
+    private List<Country> countryList;
 
     public void add(Athlete athlete) {
         athletes.add(athlete);
 
         String countryName = athlete.getCountry();
+        Country country = new Country(countryName);
 
-        if (countries.containsKey(countryName)) {
-            countries.put(countryName, countries.get(countryName) + 1);
+        if (countryList.contains(country)) {
+            country = getCountry(country);
+            countryList.remove(country);
+            country.setCount(country.getCount() + 1);
+            countryList.add(country);
+
         } else {
-            countries.put(countryName, 1);
+            Country newCountry = new Country(countryName);
+            newCountry.setCount(1);
+            countryList.add(newCountry);
         }
+
+    }
+
+    private Country getCountry(final Country country) {
+
+        Country returnCountry = null;
+        for (Country c : countryList) {
+            if (c != null && c.equals(country)) {
+                returnCountry = c;
+            }
+        }
+        return returnCountry;
     }
 
     public Athletes(Set<Athlete> athletes) {
         this.athletes = new TreeSet<>();
-        this.countries = new LinkedHashMap<>();
+        this.countryList = new ArrayList<>();
     }
 
 
+/*
     public Stream<Athlete> getAthletes() {
         return athletes.stream();
     }
+*/
 
     public void printAllThousandMetersTimes() {
         System.out.println(System.lineSeparator());
@@ -58,7 +80,40 @@ public class Athletes {
         });
     }
 
-    public void printTopCountries() {
+    public void printTopCountries(int requestedTopCount) {
+
+        System.out.println(System.lineSeparator());
+
+        countryList.sort((c1, c2) -> -c1.compareTo(c2));
+
+        List<Integer> countriesCounts = countryList.stream()
+                .map(Country::getCount)
+                .distinct()
+                .collect(Collectors.toList());
+
+        int topCount;
+
+        if (countriesCounts.size() >= requestedTopCount) {
+            topCount = requestedTopCount;
+        } else {
+            topCount = countriesCounts.size();
+        }
+
+        List<Integer> topCounts = countriesCounts.stream().limit(topCount).collect(Collectors.toList());
+
+        List<Country> topCountries = countryList.stream().filter(c -> topCounts.contains(c.getCount())).collect(Collectors.toList());
+
+        final StringBuilder sb = new StringBuilder();
+
+        topCountries.forEach(c -> {
+            sb.append(c.getName());
+            sb.append(" (");
+            sb.append(c.getCount());
+            sb.append(")");
+            sb.append("; ");
+        });
+
+        System.out.println(sb.toString());
 
     }
 
@@ -77,12 +132,4 @@ public class Athletes {
                 });
     }
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Athletes{");
-        sb.append("athletes=").append(athletes);
-        sb.append(", countries=").append(countries);
-        sb.append('}');
-        return sb.toString();
-    }
 }
