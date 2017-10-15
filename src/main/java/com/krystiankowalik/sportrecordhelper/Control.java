@@ -42,7 +42,6 @@ public final class Control {
                     displayHelp();
                     break;
                 case NO_INPUT:
-                    //displayHelp();
                     break;
 
                 default:
@@ -71,6 +70,8 @@ public final class Control {
             athletes.printAllThousandMetersTimes();
             athletes.printFirstRecordDate();
             athletes.printTopCountries(3);
+
+            athletes.getAthletes().forEach(System.out::println);
         }
 
     }

@@ -23,6 +23,16 @@ public class Athlete implements Comparable<Athlete> {
         records.add(record);
     }
 
+    public boolean isValid() {
+        if (name != null && country != null && records != null) {
+            if (!records.isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public String getName() {
         return name;
     }

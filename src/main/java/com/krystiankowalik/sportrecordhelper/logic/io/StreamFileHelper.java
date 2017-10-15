@@ -17,9 +17,9 @@ public final class StreamFileHelper implements FileHelper {
         List<String> lines = null;
 
         if (!Files.exists(filePath)) {
-            Error.print(Error.NO_SUCH_FILE, filePath.toString());
+            Error.print(Error.NO_SUCH_FILE, filePath.toString(), true);
         } else if (!Files.isRegularFile(filePath)) {
-            Error.print(Error.NOT_A_FILE, filePath.toString());
+            Error.print(Error.NOT_A_FILE, filePath.toString(), true);
         } else {
 
             try (Stream<String> linesStream = Files.lines(filePath)) {
@@ -38,9 +38,9 @@ public final class StreamFileHelper implements FileHelper {
         List<Path> files = null;
 
         if (!Files.exists(directoryPath)) {
-            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toString());
+            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toString(), true);
         } else if (!Files.isDirectory(directoryPath)) {
-            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath);
+            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath, true);
         } else {
 
             try {

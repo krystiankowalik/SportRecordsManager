@@ -40,21 +40,18 @@ public class InputParameters {
             case 2:
                 if (option.equals(NO_INPUT)) {
                     registerInvalidParamError(optionParam);
-//                    Error.print(Error.INVALID_PARAM, "option: " + optionParam);
-//                    valid = false;
                 } else if (sourceParam.equals(EMPTY)) {
                     registerInvalidParamError(sourceParam);
-                    //Error.print(Error.INVALID_PARAM, "source: " + sourceParam);
-                    //valid = false;
                 }
                 break;
             case 1:
-                if (!option.equals(HELP) && !option.equals(HELP_VERBOSE)) {
+                if (!option.equals(HELP) && !option.equals(HELP_VERBOSE) &&
+                        !option.equals(READ_FILE) && !option.equals(READ_DIRECTORY)) {
                     registerInvalidParamError(optionParam);
                 }
                 break;
             default:
-                Error.print(Error.WRONG_PARAM_COUNT, inputParameters.size());
+                Error.print(Error.WRONG_PARAM_COUNT, inputParameters.size(), true);
                 valid = false;
         }
     }
@@ -70,7 +67,7 @@ public class InputParameters {
     }
 
     private void registerInvalidParamError(String param) {
-        Error.print(Error.INVALID_PARAM, param);
+        Error.print(Error.INVALID_PARAM, param, true);
         valid = false;
     }
 

@@ -1,37 +1,53 @@
 package com.krystiankowalik.sportrecordhelper.logic.parser;
 
+import com.krystiankowalik.sportrecordhelper.logic.parser.validator.AthleteValidator;
+import com.krystiankowalik.sportrecordhelper.logic.parser.validator.RecordValidator;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athlete;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athletes;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Record;
+import com.krystiankowalik.sportrecordhelper.model.error.Error;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
+
+import static com.krystiankowalik.sportrecordhelper.util.Constants.EMPTY;
 
 public final class IterativeAthleteParser implements AthleteParser {
 
+
+    private RecordValidator recordValidator;
+    private AthleteValidator athleteValidator;
+
+    public IterativeAthleteParser() {
+        this.recordValidator = new RecordValidator();
+        this.athleteValidator = new AthleteValidator();
+    }
+
     @Override
     public Athletes parseAthletes(List<String> allLines) {
+        skipEmptyLines(allLines);
 
         List<String> singleAthleteLines = new ArrayList<>();
         Athletes athletes = new Athletes();
 
         Optional.ofNullable(allLines)
                 .ifPresent(linesList -> {
+
                     linesList.forEach(line -> {
                         if (!line.trim().equals(ATHLETE_DELIMITER)) {
                             singleAthleteLines.add(line.trim());
                         } else {
-                            athletes.add(parseAthlete(singleAthleteLines));
+                            Athlete athlete = parseAthlete(singleAthleteLines);
+                            addAthleteIfValid(athlete, athletes, singleAthleteLines);
                             singleAthleteLines.clear();
                         }
                     });
-                    athletes.add(parseAthlete(singleAthleteLines));
 
+                    Athlete athlete = parseAthlete(singleAthleteLines);
+                    addAthleteIfValid(athlete, athletes, singleAthleteLines);
                 });
 
 
@@ -39,19 +55,44 @@ public final class IterativeAthleteParser implements AthleteParser {
 
     }
 
+    private void skipEmptyLines(List<String> lines) {
+        for (int i = 0; i < lines.size(); ++i) {
+            if (lines.get(i).trim().equals(EMPTY)) {
+                lines.remove(i);
+                --i;
+                if (lines.size() == 0) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private void addAthleteIfValid(Athlete athlete, Athletes athletes, List<String> singleAthleteLines) {
+        if (athlete.isValid()) {
+            athletes.add(athlete);
+        } else {
+            Error.print(Error.PARSING_ERROR, singleAthleteLines.toString() + "\n", false);
+        }
+    }
+
 
     private Athlete parseAthlete(List<String> singleAthleteLines) {
         Athlete athlete = new Athlete();
-        final int minSingleAthleteLineCount = 3;
 
-        if (singleAthleteLines.size() >= minSingleAthleteLineCount) {
+        if (singleAthleteLines.size() >= MIN_SINGLE_ATHLETE_LINE) {
+            String athleteName = singleAthleteLines.get(0);
+            String athleteCountry = singleAthleteLines.get(1);
+            if (athleteValidator.isValidAthlete(athleteName, athleteCountry)) {
+                athlete.setName(athleteName);
+                athlete.setCountry(athleteCountry);
 
-            athlete.setName(singleAthleteLines.get(0));
-            athlete.setCountry(singleAthleteLines.get(1));
-
+            }
             singleAthleteLines.subList(2, singleAthleteLines.size())
                     .forEach(recordLine -> {
-                        athlete.addRecord(parseRecord(recordLine));
+                        Record record = parseRecord(recordLine);
+                        if (record != null) {
+                            athlete.addRecord(record);
+                        }
                     });
         }
 
@@ -60,52 +101,16 @@ public final class IterativeAthleteParser implements AthleteParser {
 
     private Record parseRecord(String recordLine) {
         Record record = new Record();
-        if (isValidRecordLine(recordLine)) {
-            String[] splitRecordLine = recordLine.split(Pattern.quote(RECORD_DELIMITER));
+        if (recordValidator.isValidRecordLine(recordLine)) {
+            String[] splitRecordLine = recordLine.split(RECORD_DELIMITER);
 
             record.setDate(LocalDate.parse(splitRecordLine[0].trim()));
             record.setDistance(Integer.valueOf(splitRecordLine[1].trim()));
             record.setTime(new BigDecimal(splitRecordLine[2].trim()));
+            return record;
         }
-        return record;
+        return null;
     }
 
-    private boolean isValidRecordLine(String string) {
-        if (!string.matches("(.*\\|.*){2}")) {
-            return false;
-        }
 
-        String[] splitLine = string.split(RECORD_DELIMITER);
-
-        if (splitLine.length != 3) {
-            return false;
-        }
-
-        try {
-            LocalDate.parse(splitLine[0]);
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-
-        /*if (!splitLine[0].matches("^\\d{4}[\\-\\/\\s]?((((0[13578])|(1[02]))[\\-\\/\\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\\-\\/\\s]?(([0-2][0-9])|(30)))|(02[\\-\\/\\s]?[0-2][0-9]))$\n")) {
-            return false;
-        }*/
-
-        if (!splitLine[1].matches("^[1-9]\\d+$")) {
-            return false;
-        }
-        if (!splitLine[2].matches("^[1-9]\\d*(\\.\\d+)?$")) {
-            return false;
-        }
-
-
-        return true;
-    }
-
-    public static void main(String[] args) {
-        //System.out.println("dupa|dupa|dupa".matches("(.*\\|.*){2}"));
-        //System.out.println(new IterativeAthleteParser().isValidRecordLine("dupa|dupa|dupa"));
-
-        System.out.println(new IterativeAthleteParser().isValidRecordLine("2015-03-15|15|2.3"));
-    }
 }

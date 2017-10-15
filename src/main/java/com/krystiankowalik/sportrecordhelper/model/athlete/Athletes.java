@@ -67,7 +67,7 @@ public class Athletes {
 
     public void printAllThousandMetersTimes() {
         System.out.println(System.lineSeparator());
-        System.out.println("Listed athletes: ");
+        System.out.println("Average athlete's timings: ");
         System.out.println(System.lineSeparator());
 
         StringBuilder sb = new StringBuilder();
@@ -114,7 +114,7 @@ public class Athletes {
 
         sb.append("Top ");
         sb.append(requestedTopCount);
-        sb.append(" Kraje");
+        sb.append(" Countries");
         sb.append(System.lineSeparator());
 
         topCountries.forEach(c -> {
@@ -140,7 +140,7 @@ public class Athletes {
                 .ifPresent(record -> {
                     LocalDate date = record.getDate();
                     if (date != null) {
-                        System.out.println("Pierwszy wynik zarejestrowano: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                        System.out.println("First record registered: " + date.format(DateTimeFormatter.ISO_LOCAL_DATE));
                     }
                 });
     }
