@@ -42,7 +42,6 @@ public final class Control {
                     break;
                 case NO_INPUT:
                     break;
-
                 default:
                     displayHelp();
             }
