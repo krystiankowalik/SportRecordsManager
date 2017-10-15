@@ -8,7 +8,7 @@ import com.krystiankowalik.sportrecordhelper.util.Constants;
 import java.nio.file.Path;
 import java.util.List;
 
-public class AthleteFileProviderImpl implements AthleteFileProvider {
+public final class AthleteFileProviderImpl implements AthleteFileProvider {
 
     private FileHelper fileHelper;
     private AthleteParser athleteParser;

@@ -6,6 +6,7 @@ import com.krystiankowalik.sportrecordhelper.model.athlete.Record;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,15 +58,54 @@ public final class IterativeAthleteParser implements AthleteParser {
         return athlete;
     }
 
-    private Record parseRecord(String string) {
+    private Record parseRecord(String recordLine) {
         Record record = new Record();
-        if (string.contains(RECORD_DELIMITER)) {
-            String[] splitRecordLine = string.split(Pattern.quote(RECORD_DELIMITER));
+        if (isValidRecordLine(recordLine)) {
+            String[] splitRecordLine = recordLine.split(Pattern.quote(RECORD_DELIMITER));
 
             record.setDate(LocalDate.parse(splitRecordLine[0].trim()));
             record.setDistance(Integer.valueOf(splitRecordLine[1].trim()));
             record.setTime(new BigDecimal(splitRecordLine[2].trim()));
         }
         return record;
+    }
+
+    private boolean isValidRecordLine(String string) {
+        if (!string.matches("(.*\\|.*){2}")) {
+            return false;
+        }
+
+        String[] splitLine = string.split(RECORD_DELIMITER);
+
+        if (splitLine.length != 3) {
+            return false;
+        }
+
+        try {
+            LocalDate.parse(splitLine[0]);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+
+        /*if (!splitLine[0].matches("^\\d{4}[\\-\\/\\s]?((((0[13578])|(1[02]))[\\-\\/\\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\\-\\/\\s]?(([0-2][0-9])|(30)))|(02[\\-\\/\\s]?[0-2][0-9]))$\n")) {
+            return false;
+        }*/
+
+        if (!splitLine[1].matches("^[1-9]\\d+$")) {
+            return false;
+        }
+        if (!splitLine[2].matches("^[1-9]\\d*(\\.\\d+)?$")) {
+            return false;
+        }
+
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        //System.out.println("dupa|dupa|dupa".matches("(.*\\|.*){2}"));
+        //System.out.println(new IterativeAthleteParser().isValidRecordLine("dupa|dupa|dupa"));
+
+        System.out.println(new IterativeAthleteParser().isValidRecordLine("2015-03-15|15|2.3"));
     }
 }
