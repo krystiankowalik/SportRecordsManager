@@ -1,6 +1,5 @@
 package com.krystiankowalik.sportrecordhelper.logic.io;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,11 +10,11 @@ import java.util.stream.Stream;
 public final class StreamFileHelper implements FileHelper {
 
     @Override
-    public List<String> readAllLines(File file) {
+    public List<String> readAllLines(Path filePath) {
 
         List<String> lines = null;
 
-        try (Stream<String> linesStream = Files.lines(file.toPath())) {
+        try (Stream<String> linesStream = Files.lines(filePath)) {
             lines = linesStream.collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,13 +25,13 @@ public final class StreamFileHelper implements FileHelper {
     }
 
     @Override
-    public List<File> getAllFilesInDirectory(File directory) {
-        List<File> files = null;
+    public List<Path> getAllFilesInDirectory(Path directoryPath) {
+        List<Path> files = null;
         try {
             files = Files
-                    .list(directory.toPath())
-                    .map(Path::toFile)
-                    .filter(f -> f.isFile() && f.toString().endsWith("txt"))
+                    .list(directoryPath)
+                    //To generify!!!
+                    .filter(f -> Files.isRegularFile(f))// && f.toString().endsWith(Constants.DATA_FILE_EXTENSION))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();

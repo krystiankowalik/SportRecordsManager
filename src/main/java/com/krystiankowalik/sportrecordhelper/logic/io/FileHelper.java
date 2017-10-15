@@ -1,10 +1,10 @@
 package com.krystiankowalik.sportrecordhelper.logic.io;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 public interface FileHelper {
-    List<String> readAllLines(File filePath);
+    List<String> readAllLines(Path filePath);
 
-    List<File> getAllFilesInDirectory(File directory);
+    List<Path> getAllFilesInDirectory(Path directory);
 }

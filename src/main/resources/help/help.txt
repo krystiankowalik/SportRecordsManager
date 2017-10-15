@@ -1,0 +1,7 @@
+Welcome to SportRecordHelper.
+In order to read files, the following syntax:
+
+| -f | path to file | - to read a single file
+| -d | path to directory | - to read a all files in the directory
+
+Enjoy :)
