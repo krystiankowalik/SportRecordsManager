@@ -2,7 +2,7 @@ package com.krystiankowalik.sportrecordhelper;
 
 import com.krystiankowalik.sportrecordhelper.model.input.InputParameters;
 
-public class MainApp {
+public final class MainApp {
 
     public static void main(String[] args) {
 

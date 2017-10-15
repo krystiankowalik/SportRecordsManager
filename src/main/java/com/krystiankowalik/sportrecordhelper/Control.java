@@ -51,6 +51,7 @@ public final class Control {
 
     private Athletes readFile(Path filePath) {
         return athleteFileProvider.readFile(filePath);
+
     }
 
     private Athletes readDirectory(Path directoryPath) {

@@ -10,7 +10,7 @@ import java.util.List;
 import static com.krystiankowalik.sportrecordhelper.model.input.Option.*;
 import static com.krystiankowalik.sportrecordhelper.util.Constants.EMPTY;
 
-public class InputParameters {
+public final class InputParameters {
 
     private List<String> inputParameters;
 

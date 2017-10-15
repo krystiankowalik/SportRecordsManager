@@ -17,6 +17,7 @@ public class Athletes {
     private List<Country> countryList;
 
     public void add(Athlete athlete) {
+
         athletes.add(athlete);
 
         String countryName = athlete.getCountry();
@@ -67,7 +68,7 @@ public class Athletes {
 
     public void printAllThousandMetersTimes() {
         System.out.println(System.lineSeparator());
-        System.out.println("Average athlete's timings: ");
+        System.out.println("Average athletes' timings: ");
         System.out.println(System.lineSeparator());
 
         StringBuilder sb = new StringBuilder();

@@ -78,8 +78,12 @@ public class Athlete implements Comparable<Athlete> {
             return AFTER;
         }
 
-        return -anotherAthlete.getRecords().stream().findFirst().get()
+        int chronologicalOrder = -anotherAthlete.getRecords().stream().findFirst().get()
                 .compareTo(this.records.stream().findFirst().get());
+
+        int alphabeticalOrder = this.name.compareTo(anotherAthlete.name);
+
+        return chronologicalOrder == EQUAL ? alphabeticalOrder : chronologicalOrder;
     }
 
     @Override
@@ -88,13 +92,12 @@ public class Athlete implements Comparable<Athlete> {
         if (o == null || getClass() != o.getClass()) return false;
         Athlete athlete = (Athlete) o;
         return Objects.equals(name, athlete.name) &&
-                Objects.equals(country, athlete.country) &&
-                Objects.equals(records, athlete.records);
+                Objects.equals(country, athlete.country);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, country, records);
+        return Objects.hash(name, country);
     }
 
     @Override

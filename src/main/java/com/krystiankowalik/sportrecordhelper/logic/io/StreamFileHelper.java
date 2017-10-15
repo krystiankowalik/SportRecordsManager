@@ -3,6 +3,7 @@ package com.krystiankowalik.sportrecordhelper.logic.io;
 import com.krystiankowalik.sportrecordhelper.model.error.Error;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -17,12 +18,12 @@ public final class StreamFileHelper implements FileHelper {
         List<String> lines = null;
 
         if (!Files.exists(filePath)) {
-            Error.print(Error.NO_SUCH_FILE, filePath.toString(), true);
+            Error.print(Error.NO_SUCH_FILE, filePath.toAbsolutePath().toString(), true);
         } else if (!Files.isRegularFile(filePath)) {
-            Error.print(Error.NOT_A_FILE, filePath.toString(), true);
+            Error.print(Error.NOT_A_FILE, filePath.toAbsolutePath().toString(), true);
         } else {
 
-            try (Stream<String> linesStream = Files.lines(filePath)) {
+            try (Stream<String> linesStream = Files.lines(filePath, Charset.forName("UTF-8"))) {
                 lines = linesStream.collect(Collectors.toList());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -38,9 +39,9 @@ public final class StreamFileHelper implements FileHelper {
         List<Path> files = null;
 
         if (!Files.exists(directoryPath)) {
-            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toString(), true);
+            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toAbsolutePath().toString(), true);
         } else if (!Files.isDirectory(directoryPath)) {
-            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath, true);
+            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath.toAbsolutePath().toString(), true);
         } else {
 
             try {

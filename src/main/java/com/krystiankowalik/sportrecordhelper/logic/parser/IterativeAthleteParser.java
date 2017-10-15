@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.krystiankowalik.sportrecordhelper.util.Constants.EMPTY;
 
@@ -32,23 +31,23 @@ public final class IterativeAthleteParser implements AthleteParser {
         List<String> singleAthleteLines = new ArrayList<>();
         Athletes athletes = new Athletes();
 
-        Optional.ofNullable(allLines)
-                .ifPresent(linesList -> {
+        if (allLines != null) {
 
-                    linesList.forEach(line -> {
-                        skipEmptyLines(allLines);
-                        if (!line.trim().equals(ATHLETE_DELIMITER)) {
-                            singleAthleteLines.add(line.trim());
-                        } else {
-                            Athlete athlete = parseAthlete(singleAthleteLines);
-                            addAthleteIfValid(athlete, athletes, singleAthleteLines);
-                            singleAthleteLines.clear();
-                        }
-                    });
+            skipEmptyLines(allLines);
 
-                    Athlete athlete = parseAthlete(singleAthleteLines);
-                    addAthleteIfValid(athlete, athletes, singleAthleteLines);
-                });
+            allLines.forEach(line -> {
+                if (!line.trim().equals(ATHLETE_DELIMITER)) {
+                    singleAthleteLines.add(line.trim());
+                } else {
+                    addAthleteIfValid(parseAthlete(singleAthleteLines), athletes, singleAthleteLines);
+                    singleAthleteLines.clear();
+                }
+            });
+
+            addAthleteIfValid(parseAthlete(singleAthleteLines), athletes, singleAthleteLines);
+
+
+        }
 
 
         return athletes;

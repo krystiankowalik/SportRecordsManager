@@ -29,6 +29,7 @@ public final class AthleteFileProviderImpl implements AthleteFileProvider {
         Athletes athletes = new Athletes();
 
         List<Path> allFilesInDirectory = fileHelper.getAllFilesInDirectory(directoryPath);
+
         if (allFilesInDirectory != null) {
             allFilesInDirectory
                     .stream()

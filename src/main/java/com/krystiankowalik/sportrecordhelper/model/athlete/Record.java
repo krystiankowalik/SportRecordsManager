@@ -59,6 +59,7 @@ public class Record implements Comparable<Record> {
         return thousandMetersTimeEquivalent;
     }
 
+
     private void recalculateThousandMetersTimeEquivalent() {
         if (time != null && distance != 0) {
             thousandMetersTimeEquivalent = time
@@ -66,6 +67,7 @@ public class Record implements Comparable<Record> {
                     .multiply(BigDecimal.valueOf(1000));
         }
     }
+
 
     @Override
     public boolean equals(Object o) {
