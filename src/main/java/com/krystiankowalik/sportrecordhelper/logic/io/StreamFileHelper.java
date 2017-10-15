@@ -1,5 +1,7 @@
 package com.krystiankowalik.sportrecordhelper.logic.io;
 
+import com.krystiankowalik.sportrecordhelper.model.error.Error;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +16,17 @@ public final class StreamFileHelper implements FileHelper {
 
         List<String> lines = null;
 
-        try (Stream<String> linesStream = Files.lines(filePath)) {
-            lines = linesStream.collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!Files.exists(filePath)) {
+            Error.print(Error.NO_SUCH_FILE, filePath.toString());
+        } else if (!Files.isRegularFile(filePath)) {
+            Error.print(Error.NOT_A_FILE, filePath.toString());
+        } else {
+
+            try (Stream<String> linesStream = Files.lines(filePath)) {
+                lines = linesStream.collect(Collectors.toList());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         return lines;
@@ -27,14 +36,21 @@ public final class StreamFileHelper implements FileHelper {
     @Override
     public List<Path> getAllFilesInDirectory(Path directoryPath) {
         List<Path> files = null;
-        try {
-            files = Files
-                    .list(directoryPath)
-                    //To generify!!!
-                    .filter(f -> Files.isRegularFile(f))// && f.toString().endsWith(Constants.DATA_FILE_EXTENSION))
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (!Files.exists(directoryPath)) {
+            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toString());
+        } else if (!Files.isDirectory(directoryPath)) {
+            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath);
+        } else {
+
+            try {
+                files = Files
+                        .list(directoryPath)
+                        .filter(f -> Files.isRegularFile(f))
+                        .collect(Collectors.toList());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return files;
     }

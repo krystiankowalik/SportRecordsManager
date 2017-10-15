@@ -6,7 +6,7 @@ import com.krystiankowalik.sportrecordhelper.model.athlete.Athletes;
 import com.krystiankowalik.sportrecordhelper.util.Constants;
 
 import java.nio.file.Path;
-import java.util.TreeSet;
+import java.util.List;
 
 public class AthleteFileProviderImpl implements AthleteFileProvider {
 
@@ -26,12 +26,15 @@ public class AthleteFileProviderImpl implements AthleteFileProvider {
     @Override
     public Athletes readDirectory(Path directoryPath) {
 
-        Athletes athletes = new Athletes(new TreeSet<>());
+        Athletes athletes = new Athletes();
 
-        fileHelper.getAllFilesInDirectory(directoryPath)
-                .stream()
-                .filter(filePath -> filePath.toString().endsWith(Constants.DATA_FILE_EXTENSION))
-                .forEach(filePath -> athletes.addAll(readFile(filePath)));
+        List<Path> allFilesInDirectory = fileHelper.getAllFilesInDirectory(directoryPath);
+        if (allFilesInDirectory != null) {
+            allFilesInDirectory
+                    .stream()
+                    .filter(filePath -> filePath.toString().endsWith(Constants.DATA_FILE_EXTENSION))
+                    .forEach(filePath -> athletes.addAll(readFile(filePath)));
+        }
 
         return athletes;
     }

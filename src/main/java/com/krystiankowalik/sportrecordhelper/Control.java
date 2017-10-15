@@ -6,44 +6,48 @@ import com.krystiankowalik.sportrecordhelper.logic.AthleteFileProviderImpl;
 import com.krystiankowalik.sportrecordhelper.logic.io.StreamFileHelper;
 import com.krystiankowalik.sportrecordhelper.logic.parser.IterativeAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athletes;
-import com.krystiankowalik.sportrecordhelper.model.input.InputTypeParameter;
+import com.krystiankowalik.sportrecordhelper.model.input.InputParameters;
 import com.krystiankowalik.sportrecordhelper.util.Constants;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public final class Control {
 
-    private InputTypeParameter inputTypeParameter;
-    private Path source;
+    private InputParameters inputParameters;
 
     private AthleteFileProvider athleteFileProvider;
 
 
-    public Control(InputTypeParameter inputTypeParameter, String inputSourceParameter) {
-        this.inputTypeParameter = inputTypeParameter;
-        this.source = Paths.get(inputSourceParameter);
+    public Control(final InputParameters inputParameters) {
+        this.inputParameters = inputParameters;
         this.athleteFileProvider = new AthleteFileProviderImpl(new StreamFileHelper(), new IterativeAthleteParser());
     }
 
+
     public void run() {
 
-        switch (inputTypeParameter) {
-            case READ_FILE:
-                printStatistics(readFile(source));
-                break;
-            case READ_DIRECTORY:
-                printStatistics(readDirectory(source));
-                break;
-            case HELP:
-                displayHelp();
-                break;
-            case NO_INPUT:
-                displayHelp();
-                break;
+        if (inputParameters.isValid()) {
 
-            default:
-                System.out.println("Unknown input type parameter: " + inputTypeParameter);
+            switch (inputParameters.getOption()) {
+                case READ_FILE:
+                    printStatistics(readFile(inputParameters.getSource()));
+                    break;
+                case READ_DIRECTORY:
+                    printStatistics(readDirectory(inputParameters.getSource()));
+                    break;
+                case HELP:
+                    displayHelp();
+                    break;
+                case HELP_VERBOSE:
+                    displayHelp();
+                    break;
+                case NO_INPUT:
+                    //displayHelp();
+                    break;
+
+                default:
+                    displayHelp();
+            }
         }
     }
 
@@ -62,9 +66,13 @@ public final class Control {
     }
 
     private void printStatistics(Athletes athletes) {
-        athletes.printAllThousandMetersTimes();
-        athletes.printFirstRecordDate();
-        athletes.printTopCountries(3);
+
+        if (!athletes.isEmpty()) {
+            athletes.printAllThousandMetersTimes();
+            athletes.printFirstRecordDate();
+            athletes.printTopCountries(3);
+        }
+
     }
 
 

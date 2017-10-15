@@ -7,6 +7,7 @@ import java.util.List;
 public interface AthleteParser {
 
     String ATHLETE_DELIMITER = "-";
+    String RECORD_DELIMITER = "|";
 
     Athletes parseAthletes(List<String> lines);
 

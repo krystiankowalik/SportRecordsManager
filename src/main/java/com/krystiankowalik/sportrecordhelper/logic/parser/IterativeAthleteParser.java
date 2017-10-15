@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public final class IterativeAthleteParser implements AthleteParser {
@@ -17,17 +17,22 @@ public final class IterativeAthleteParser implements AthleteParser {
     public Athletes parseAthletes(List<String> allLines) {
 
         List<String> singleAthleteLines = new ArrayList<>();
-        Athletes athletes = new Athletes(new TreeSet<>());
+        Athletes athletes = new Athletes();
 
-        allLines.forEach(line -> {
-            if (!line.trim().equals(ATHLETE_DELIMITER)) {
-                singleAthleteLines.add(line.trim());
-            } else {
-                athletes.add(parseAthlete(singleAthleteLines));
-                singleAthleteLines.clear();
-            }
-        });
-        athletes.add(parseAthlete(singleAthleteLines));
+        Optional.ofNullable(allLines)
+                .ifPresent(linesList -> {
+                    linesList.forEach(line -> {
+                        if (!line.trim().equals(ATHLETE_DELIMITER)) {
+                            singleAthleteLines.add(line.trim());
+                        } else {
+                            athletes.add(parseAthlete(singleAthleteLines));
+                            singleAthleteLines.clear();
+                        }
+                    });
+                    athletes.add(parseAthlete(singleAthleteLines));
+
+                });
+
 
         return athletes;
 
@@ -36,26 +41,31 @@ public final class IterativeAthleteParser implements AthleteParser {
 
     private Athlete parseAthlete(List<String> singleAthleteLines) {
         Athlete athlete = new Athlete();
+        final int minSingleAthleteLineCount = 3;
 
-        athlete.setName(singleAthleteLines.get(0));
-        athlete.setCountry(singleAthleteLines.get(1));
+        if (singleAthleteLines.size() >= minSingleAthleteLineCount) {
 
-        singleAthleteLines.subList(2, singleAthleteLines.size())
-                .forEach(recordLine -> {
-                    athlete.addRecord(parseRecord(recordLine));
-                });
+            athlete.setName(singleAthleteLines.get(0));
+            athlete.setCountry(singleAthleteLines.get(1));
+
+            singleAthleteLines.subList(2, singleAthleteLines.size())
+                    .forEach(recordLine -> {
+                        athlete.addRecord(parseRecord(recordLine));
+                    });
+        }
 
         return athlete;
     }
 
     private Record parseRecord(String string) {
         Record record = new Record();
-        String[] splitRecordLine = string.split(Pattern.quote("|"));
+        if (string.contains(RECORD_DELIMITER)) {
+            String[] splitRecordLine = string.split(Pattern.quote(RECORD_DELIMITER));
 
-        record.setDate(LocalDate.parse(splitRecordLine[0].trim()));
-        record.setDistance(Integer.valueOf(splitRecordLine[1].trim()));
-        record.setTime(new BigDecimal(splitRecordLine[2].trim()));
-
+            record.setDate(LocalDate.parse(splitRecordLine[0].trim()));
+            record.setDistance(Integer.valueOf(splitRecordLine[1].trim()));
+            record.setTime(new BigDecimal(splitRecordLine[2].trim()));
+        }
         return record;
     }
 }

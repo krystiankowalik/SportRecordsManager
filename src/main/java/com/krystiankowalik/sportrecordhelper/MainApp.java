@@ -1,20 +1,21 @@
 package com.krystiankowalik.sportrecordhelper;
 
-import static com.krystiankowalik.sportrecordhelper.model.input.InputTypeParameter.NO_INPUT;
-import static com.krystiankowalik.sportrecordhelper.model.input.InputTypeParameter.getInputTypeByParameter;
+import com.krystiankowalik.sportrecordhelper.model.input.InputParameters;
 
 public class MainApp {
 
     public static void main(String[] args) {
 
-        Control control = null;
+        Control control = new Control(new InputParameters(args));
 
+        control.run();
+/*
         switch (args.length) {
             case 2:
-                control = new Control(getInputTypeByParameter(args[0]), args[1]);
+                control = new Control(getOptionByParameter(args[0]), args[1]);
                 break;
             case 1:
-                control = new Control(getInputTypeByParameter(args[0]), NO_INPUT.inputType);
+                control = new Control(getOptionByParameter(args[0]), NO_INPUT.inputType);
                 break;
             case 0:
                 control = new Control(NO_INPUT, NO_INPUT.inputType);
@@ -24,7 +25,7 @@ public class MainApp {
         }
 
         assert control != null;
-        control.run();
+        control.run();*/
 
 
     }

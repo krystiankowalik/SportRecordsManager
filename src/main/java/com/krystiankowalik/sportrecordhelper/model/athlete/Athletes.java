@@ -36,6 +36,10 @@ public class Athletes {
 
     }
 
+    public boolean isEmpty() {
+        return athletes.isEmpty();
+    }
+
     public void addAll(Athletes athletes) {
         athletes.getAthletes().forEach(this::add);
     }
@@ -51,7 +55,7 @@ public class Athletes {
         return returnCountry;
     }
 
-    public Athletes(Set<Athlete> athletes) {
+    public Athletes() {
         this.athletes = new TreeSet<>();
         this.countryList = new ArrayList<>();
     }
