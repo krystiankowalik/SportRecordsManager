@@ -28,7 +28,6 @@ public final class IterativeAthleteParser implements AthleteParser {
 
     @Override
     public Athletes parseAthletes(List<String> allLines) {
-        skipEmptyLines(allLines);
 
         List<String> singleAthleteLines = new ArrayList<>();
         Athletes athletes = new Athletes();
@@ -37,6 +36,7 @@ public final class IterativeAthleteParser implements AthleteParser {
                 .ifPresent(linesList -> {
 
                     linesList.forEach(line -> {
+                        skipEmptyLines(allLines);
                         if (!line.trim().equals(ATHLETE_DELIMITER)) {
                             singleAthleteLines.add(line.trim());
                         } else {

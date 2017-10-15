@@ -23,7 +23,6 @@ public final class Control {
         this.athleteFileProvider = new AthleteFileProviderImpl(new StreamFileHelper(), new IterativeAthleteParser());
     }
 
-
     public void run() {
 
         if (inputParameters.isValid()) {
@@ -59,7 +58,7 @@ public final class Control {
     }
 
     private void displayHelp() {
-        System.out.println();
+        System.out.print(System.lineSeparator());
 
         System.out.println(Constants.help());
     }
@@ -70,8 +69,6 @@ public final class Control {
             athletes.printAllThousandMetersTimes();
             athletes.printFirstRecordDate();
             athletes.printTopCountries(3);
-
-            athletes.getAthletes().forEach(System.out::println);
         }
 
     }

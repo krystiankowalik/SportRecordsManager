@@ -74,7 +74,7 @@ public class Athletes {
         athletes.forEach(a -> {
             sb.setLength(0);
             sb.append(a.getName());
-            sb.append(" - 1000m w ");
+            sb.append(" - 1000m in ");
             sb.append(a.getRecords()
                     .stream()
                     .map(Record::getThousandMetersTimeEquivalent)
