@@ -1,8 +1,8 @@
 package com.krystiankowalik.sportrecordhelper;
 
 
-import com.krystiankowalik.sportrecordhelper.logic.AthleteProvider;
-import com.krystiankowalik.sportrecordhelper.logic.AthleteProviderImpl;
+import com.krystiankowalik.sportrecordhelper.logic.AthleteFileProvider;
+import com.krystiankowalik.sportrecordhelper.logic.AthleteFileProviderImpl;
 import com.krystiankowalik.sportrecordhelper.logic.io.StreamFileHelper;
 import com.krystiankowalik.sportrecordhelper.logic.parser.IterativeAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.athlete.Athletes;
@@ -17,13 +17,13 @@ public final class Control {
     private InputTypeParameter inputTypeParameter;
     private Path source;
 
-    private AthleteProvider athleteProvider;
+    private AthleteFileProvider athleteFileProvider;
 
 
     public Control(InputTypeParameter inputTypeParameter, String inputSourceParameter) {
         this.inputTypeParameter = inputTypeParameter;
         this.source = Paths.get(inputSourceParameter);
-        this.athleteProvider = new AthleteProviderImpl(new StreamFileHelper(), new IterativeAthleteParser());
+        this.athleteFileProvider = new AthleteFileProviderImpl(new StreamFileHelper(), new IterativeAthleteParser());
     }
 
     public void run() {
@@ -48,11 +48,11 @@ public final class Control {
     }
 
     private Athletes readFile(Path filePath) {
-        return athleteProvider.readFile(filePath);
+        return athleteFileProvider.readFile(filePath);
     }
 
     private Athletes readDirectory(Path directoryPath) {
-        return athleteProvider.readDirectory(directoryPath);
+        return athleteFileProvider.readDirectory(directoryPath);
     }
 
     private void displayHelp() {
