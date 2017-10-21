@@ -29,13 +29,19 @@ public class Athlete {
     private String country;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete")
-    private List<Record> records;
+    private List<Score> records;
 
-    public void addRecord(Record record) {
+    public Athlete(String name, String country, List<Score> records) {
+        this.name = name;
+        this.country = country;
+        this.records = records;
+    }
+
+    public void addRecord(Score score) {
         if (records == null) {
             records = new ArrayList<>();
         }
-        records.add(record);
+        records.add(score);
     }
 
     @Override

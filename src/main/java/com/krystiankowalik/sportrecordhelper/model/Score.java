@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Entity(name = "records")
-public class Record {
+@Entity(name = "scores")
+public class Score {
 
 
     @Id
@@ -35,11 +35,22 @@ public class Record {
     @ManyToOne(cascade = CascadeType.ALL)
     private Athlete athlete;
 
-    //private BigDecimal thousandMetersTime;
+    public Score(LocalDate date, int distance, BigDecimal time) {
+        this.date = date;
+        this.distance = distance;
+        this.time = time;
+    }
+
+    public Score(int id, LocalDate date, int distance, BigDecimal time) {
+        this.id = id;
+        this.date = date;
+        this.distance = distance;
+        this.time = time;
+    }
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Record{");
+        final StringBuffer sb = new StringBuffer("Score{");
         sb.append("date=").append(date);
         sb.append(", distance=").append(distance);
         sb.append(", time=").append(time);
