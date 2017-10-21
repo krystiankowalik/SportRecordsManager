@@ -29,19 +29,19 @@ public class Athlete {
     private String country;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete")
-    private List<Score> records;
+    private List<Score> scores;
 
-    public Athlete(String name, String country, List<Score> records) {
+    public Athlete(String name, String country, List<Score> scores) {
         this.name = name;
         this.country = country;
-        this.records = records;
+        this.scores = scores;
     }
 
     public void addRecord(Score score) {
-        if (records == null) {
-            records = new ArrayList<>();
+        if (scores == null) {
+            scores = new ArrayList<>();
         }
-        records.add(score);
+        scores.add(score);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Athlete {
         final StringBuffer sb = new StringBuffer("Athlete{");
         sb.append("name='").append(name).append('\'');
         sb.append(", country='").append(country).append('\'');
-        sb.append(", records=").append(records);
+        sb.append(", scores=").append(scores);
         sb.append('}');
         return sb.toString();
     }

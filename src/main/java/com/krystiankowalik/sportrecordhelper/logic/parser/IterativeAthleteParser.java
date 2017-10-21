@@ -100,17 +100,19 @@ public final class IterativeAthleteParser implements AthleteParser {
             }
             singleAthleteLines.subList(2, singleAthleteLines.size())
                     .forEach(recordLine -> {
-                        Score score = parseRecord(recordLine);
+                        Score score = parseScore(recordLine);
                         if (score != null) {
                             athlete.addRecord(score);
                         }
                     });
         }
 
+        athlete.getScores().forEach(score -> score.setAthlete(athlete));
+
         return athlete;
     }
 
-    private Score parseRecord(String recordLine) {
+    private Score parseScore(String recordLine) {
         Score score = new Score();
         if (recordValidator.isValidRecordLine(recordLine)) {
             String[] splitRecordLine = recordLine.split(RECORD_DELIMITER);

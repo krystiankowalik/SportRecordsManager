@@ -33,6 +33,7 @@ public class Score {
     private BigDecimal time;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "athlete_id", referencedColumnName = "id")
     private Athlete athlete;
 
     public Score(LocalDate date, int distance, BigDecimal time) {
