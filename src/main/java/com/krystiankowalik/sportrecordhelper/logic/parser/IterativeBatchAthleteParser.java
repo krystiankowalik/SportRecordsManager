@@ -1,7 +1,7 @@
 package com.krystiankowalik.sportrecordhelper.logic.parser;
 
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,8 +15,7 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
 
     private AthleteParser athleteParser;
 
-    @Autowired
-    public IterativeBatchAthleteParser(AthleteParser athleteParser) {
+    public IterativeBatchAthleteParser(@Qualifier(value = "iterativeAthleteParser") AthleteParser athleteParser) {
         this.athleteParser = athleteParser;
     }
 
