@@ -13,6 +13,9 @@ public class Constants {
 
     public static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
 
+
+    public static final String EMPTY = "";
+
     private Constants() {
     }
 
