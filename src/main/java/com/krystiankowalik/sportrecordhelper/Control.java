@@ -78,12 +78,12 @@ public class Control {
     private void handleTwoParameters(String option, String sourcePath) {
         switch (option) {
             case READ_FILE:
-                if (isSuccesful(writeFileToDb(sourcePath))) {
+                if (isSuccessful(writeFileToDb(sourcePath))) {
                     readFromDb();
                 }
                 break;
             case READ_DIRECTORY:
-                if (isSuccesful(writeDirectoryToDb(sourcePath))) {
+                if (isSuccessful(writeDirectoryToDb(sourcePath))) {
                     readFromDb();
                 }
                 break;
@@ -138,7 +138,7 @@ public class Control {
     }
 
 
-    private boolean isSuccesful(boolean success) {
+    private boolean isSuccessful(boolean success) {
         return success;
     }
 
