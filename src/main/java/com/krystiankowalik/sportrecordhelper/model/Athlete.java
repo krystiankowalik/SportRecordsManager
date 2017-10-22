@@ -31,6 +31,10 @@ public class Athlete {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "athlete")
     private List<Score> scores;
 
+    public Athlete(String name) {
+        this.name = name;
+    }
+
     public Athlete(String name, String country, List<Score> scores) {
         this.name = name;
         this.country = country;
