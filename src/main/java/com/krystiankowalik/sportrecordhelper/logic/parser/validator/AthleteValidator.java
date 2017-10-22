@@ -1,6 +1,6 @@
 package com.krystiankowalik.sportrecordhelper.logic.parser.validator;
 
-import com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage;
+import com.krystiankowalik.sportrecordhelper.error.ErrorMessage;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 

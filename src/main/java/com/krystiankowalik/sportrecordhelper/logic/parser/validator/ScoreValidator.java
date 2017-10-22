@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import static com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser.RECORD_DELIMITER;
-import static com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser.RECORD_MEMBERS_COUNT;
-import static com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage.*;
+import static com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser.SCORE_DELIMITER;
+import static com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser.SCORE_MEMBERS_COUNT;
+import static com.krystiankowalik.sportrecordhelper.error.ErrorMessage.*;
 
 @Component
-public final class RecordValidator {
+public final class ScoreValidator {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
@@ -22,10 +22,10 @@ public final class RecordValidator {
             return false;
         }
 
-        final String[] splitLine = string.split(RECORD_DELIMITER);
+        final String[] splitLine = string.split(SCORE_DELIMITER);
 
-        if (!isValidMembersCount(splitLine, RECORD_MEMBERS_COUNT)) {
-            logger.error(INVALID_MEMBER_COUNT + ": " + splitLine.length + " in: " + string + " expected count: " + RECORD_MEMBERS_COUNT);
+        if (!isValidMembersCount(splitLine, SCORE_MEMBERS_COUNT)) {
+            logger.error(INVALID_MEMBER_COUNT + ": " + splitLine.length + " in: " + string + " expected count: " + SCORE_MEMBERS_COUNT);
             return false;
         }
 
@@ -52,7 +52,7 @@ public final class RecordValidator {
     }
 
     private boolean isPipeDelimited(String string) {
-        return string != null && string.matches("(.*" + RECORD_DELIMITER + ".*){2}");
+        return string != null && string.matches("(.*" + SCORE_DELIMITER + ".*){2}");
     }
 
     private boolean isValidDateFormat(String string) {

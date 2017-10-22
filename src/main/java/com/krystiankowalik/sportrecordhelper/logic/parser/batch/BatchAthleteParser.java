@@ -1,4 +1,4 @@
-package com.krystiankowalik.sportrecordhelper.logic.parser;
+package com.krystiankowalik.sportrecordhelper.logic.parser.batch;
 
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.springframework.stereotype.Service;
@@ -10,6 +10,6 @@ public interface BatchAthleteParser {
 
     String ATHLETE_DELIMITER = "-";
 
-    List<Athlete> parseAthletes(List<String> lines);
+    List<Athlete> parseAll(List<String> lines);
 
 }

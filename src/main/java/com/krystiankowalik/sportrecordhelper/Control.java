@@ -3,9 +3,8 @@ package com.krystiankowalik.sportrecordhelper;
 import com.krystiankowalik.sportrecordhelper.dao.AthleteCustomDao;
 import com.krystiankowalik.sportrecordhelper.dao.ScoreCustomDao;
 import com.krystiankowalik.sportrecordhelper.logic.io.FileHelper;
-import com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser;
-import com.krystiankowalik.sportrecordhelper.logic.parser.BatchAthleteParser;
-import com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage;
+import com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser;
+import com.krystiankowalik.sportrecordhelper.logic.parser.batch.BatchAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,8 @@ public class Control {
     }
 
     public void run() {
-        logger.error("sample error");
 
-        logger.error(ErrorMessage.INVALID_NAME);
-
-        List<Athlete> athletes = batchAthleteParser.parseAthletes(fileHelper.readAllLines(Paths.get("/home/wd40/Public/dane.txt")));
+        List<Athlete> athletes = batchAthleteParser.parseAll(fileHelper.readAllLines(Paths.get("/home/wd40/Public/dane.txt")));
         athleteCustomDao.save(athletes);
 
         System.out.println(scoreCustomDao.findOldestDate());

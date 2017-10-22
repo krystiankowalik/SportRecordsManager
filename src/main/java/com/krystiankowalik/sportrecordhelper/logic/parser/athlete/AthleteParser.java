@@ -1,4 +1,4 @@
-package com.krystiankowalik.sportrecordhelper.logic.parser;
+package com.krystiankowalik.sportrecordhelper.logic.parser.athlete;
 
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.springframework.stereotype.Service;
@@ -8,11 +8,11 @@ import java.util.List;
 @Service
 public interface AthleteParser {
 
-    String RECORD_DELIMITER = "\\|";
+    String SCORE_DELIMITER = "\\|";
 
-    int RECORD_MEMBERS_COUNT = 3;
+    int SCORE_MEMBERS_COUNT = 3;
     int MIN_SINGLE_ATHLETE_LINE = 3;
 
-    Athlete parseAthlete(List<String> lines);
+    Athlete parse(List<String> lines);
 
 }

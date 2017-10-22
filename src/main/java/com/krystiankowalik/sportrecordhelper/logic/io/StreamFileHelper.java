@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage.*;
+import static com.krystiankowalik.sportrecordhelper.error.ErrorMessage.*;
 
 @Service
 public final class StreamFileHelper implements FileHelper {

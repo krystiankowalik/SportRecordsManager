@@ -1,5 +1,6 @@
-package com.krystiankowalik.sportrecordhelper.logic.parser;
+package com.krystiankowalik.sportrecordhelper.logic.parser.batch;
 
+import com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
 
 
     @Override
-    public List<Athlete> parseAthletes(List<String> lines) {
+    public List<Athlete> parseAll(List<String> lines) {
 
         List<Athlete> athletes = new ArrayList<>();
         List<String> singleAthletesLines = new ArrayList<>();
@@ -34,14 +35,14 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
                 if (!line.equals(ATHLETE_DELIMITER)) {
                     singleAthletesLines.add(line);
                 } else {
-                    Athlete athlete = athleteParser.parseAthlete(singleAthletesLines);
+                    Athlete athlete = athleteParser.parse(singleAthletesLines);
                     if (athlete != null) {
                         athletes.add(athlete);
                     }
                     singleAthletesLines.clear();
                 }
             });
-            Athlete athlete = athleteParser.parseAthlete(singleAthletesLines);
+            Athlete athlete = athleteParser.parse(singleAthletesLines);
             if (athlete != null) {
                 athletes.add(athlete);
             }

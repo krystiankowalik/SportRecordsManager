@@ -1,4 +1,4 @@
-package com.krystiankowalik.sportrecordhelper.logic.parser.error;
+package com.krystiankowalik.sportrecordhelper.error;
 
 public enum ErrorMessage {
 
