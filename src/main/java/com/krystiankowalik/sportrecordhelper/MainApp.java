@@ -3,7 +3,7 @@ package com.krystiankowalik.sportrecordhelper;
 import com.krystiankowalik.sportrecordhelper.config.DatabaseConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class MainApp {
+public final class MainApp {
 
     public static void main(String[] args) {
 

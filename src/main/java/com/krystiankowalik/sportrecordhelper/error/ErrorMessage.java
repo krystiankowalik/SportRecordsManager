@@ -10,6 +10,7 @@ public enum ErrorMessage {
     NOT_A_FILE("Not a file"),
     NOT_A_DIRECTORY("Not a directory"),
 
+    EMPTY_LINE("Empty line cannot be parsed"),
     MISSING_DELIMITER("Missing delimiter"),
     INVALID_MEMBER_COUNT("Invalid member count"),
     INVALID_DATE_FORMAT("Invalid date format"),
@@ -18,7 +19,9 @@ public enum ErrorMessage {
     PARSING_ERROR("Parsing error"),
 
     INVALID_NAME("Invalid Name"),
-    INVALID_COUNTRY("Invalid country");
+    INVALID_COUNTRY("Invalid country"),
+
+    RECORD_SKIPPED("Record Skipped");
 
     private String errorMessage;
 

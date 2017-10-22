@@ -18,11 +18,11 @@ import java.util.List;
 @Transactional
 public class Control {
 
-    private FileHelper fileHelper;
-    private AthleteParser athleteParser;
-    private BatchAthleteParser batchAthleteParser;
-    private ScoreCustomDao scoreCustomDao;
-    private AthleteCustomDao athleteCustomDao;
+    private final FileHelper fileHelper;
+    private final AthleteParser athleteParser;
+    private final BatchAthleteParser batchAthleteParser;
+    private final ScoreCustomDao scoreCustomDao;
+    private final AthleteCustomDao athleteCustomDao;
 
     private final Logger logger = Logger.getLogger(this.getClass());
 

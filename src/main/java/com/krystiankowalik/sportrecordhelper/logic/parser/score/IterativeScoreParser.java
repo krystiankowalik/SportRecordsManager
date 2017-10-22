@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static com.krystiankowalik.sportrecordhelper.error.ErrorMessage.PARSING_ERROR;
-import static com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser.SCORE_DELIMITER;
+
 @Service
-public class IterativeScoreParser implements ScoreParser {
+public final class IterativeScoreParser implements ScoreParser {
 
     private final ScoreValidator scoreValidator;
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -25,16 +25,33 @@ public class IterativeScoreParser implements ScoreParser {
     @Override
     public Score parse(String scoreLine) {
         Score score = new Score();
-        if (scoreValidator.isValidRecordLine(scoreLine)) {
-            String[] splitRecordLine = scoreLine.split(SCORE_DELIMITER);
 
-            score.setDate(LocalDate.parse(splitRecordLine[0].trim()));
-            score.setDistance(Integer.valueOf(splitRecordLine[1].trim()));
-            score.setTime(new BigDecimal(splitRecordLine[2].trim()));
-            return score;
-        } else {
+        if (!scoreValidator.isValidScoreLine(scoreLine)) {
             logger.error(PARSING_ERROR + " in score line: " + scoreLine);
+            return null;
         }
-        return null;
+
+        String[] splitScoreLine = scoreLine.split(SCORE_DELIMITER);
+
+        parseDate(splitScoreLine, score);
+        parseDistance(splitScoreLine, score);
+        parseTime(splitScoreLine, score);
+
+        return score;
     }
+
+
+    private void parseDate(String[] splitScoreLine, Score score) {
+        score.setDate(LocalDate.parse(splitScoreLine[0].trim()));
+    }
+
+    private void parseTime(String[] splitScoreLine, Score score) {
+        score.setTime(new BigDecimal(splitScoreLine[2].trim()));
+    }
+
+    private void parseDistance(String[] splitScoreLine, Score score) {
+        score.setDistance(Integer.valueOf(splitScoreLine[1].trim()));
+    }
+
+
 }

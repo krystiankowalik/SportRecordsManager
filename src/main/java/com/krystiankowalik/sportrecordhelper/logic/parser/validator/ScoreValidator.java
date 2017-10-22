@@ -6,16 +6,25 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-import static com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser.SCORE_DELIMITER;
-import static com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser.SCORE_MEMBERS_COUNT;
 import static com.krystiankowalik.sportrecordhelper.error.ErrorMessage.*;
+import static com.krystiankowalik.sportrecordhelper.logic.parser.score.ScoreParser.SCORE_DELIMITER;
+import static com.krystiankowalik.sportrecordhelper.logic.parser.score.ScoreParser.SCORE_MEMBERS_COUNT;
 
 @Component
 public final class ScoreValidator {
 
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    public boolean isValidRecordLine(String string) {
+    public boolean isValidScoreLine(String string) {
+
+        if(string==null){
+            logger.error(EMPTY_LINE);
+            return false;
+        }
+        if(string.trim().equals("")){
+            logger.error(EMPTY_LINE);
+            return false;
+        }
 
         if (!isPipeDelimited(string)) {
             logger.error(MISSING_DELIMITER + "in: " + string);
