@@ -1,18 +1,22 @@
 package com.krystiankowalik.sportrecordhelper.logic.parser.validator;
 
+import com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public final class AthleteValidator {
 
-    public boolean isValidAthlete(String name, String country){
-        if(!isValidName(name)){
-//            Error.print(Error.INVALID_NAME, name, false);
+    private final Logger logger = Logger.getLogger(this.getClass());
+
+    public boolean isValidAthlete(String name, String country) {
+        if (!isValidName(name)) {
+            logger.error(ErrorMessage.INVALID_NAME + name);
             return false;
         }
 
-        if (!isValidCountry(country)){
-//            Error.print(Error.INVALID_COUNTRY, name, false);
+        if (!isValidCountry(country)) {
+            logger.error(ErrorMessage.INVALID_COUNTRY + country);
             return false;
         }
 
@@ -20,11 +24,11 @@ public final class AthleteValidator {
     }
 
     private boolean isValidName(String string) {
-        return string.matches("^[\\p{L}\\s'.-]+$");
+        return string != null && string.matches("^[\\p{L}\\s'.-]+$");
     }
 
     private boolean isValidCountry(String string) {
-        return string.matches("^[\\p{L}\\s'.-]+$");
+        return string != null && string.matches("^[\\p{L}\\s'.-]+$");
 
     }
 

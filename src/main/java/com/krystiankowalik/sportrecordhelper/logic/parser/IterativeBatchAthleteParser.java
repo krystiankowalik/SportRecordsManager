@@ -34,11 +34,17 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
                 if (!line.equals(ATHLETE_DELIMITER)) {
                     singleAthletesLines.add(line);
                 } else {
-                    athletes.add(athleteParser.parseAthlete(singleAthletesLines));
+                    Athlete athlete = athleteParser.parseAthlete(singleAthletesLines);
+                    if (athlete != null) {
+                        athletes.add(athlete);
+                    }
                     singleAthletesLines.clear();
                 }
             });
-            athletes.add(athleteParser.parseAthlete(singleAthletesLines));
+            Athlete athlete = athleteParser.parseAthlete(singleAthletesLines);
+            if (athlete != null) {
+                athletes.add(athlete);
+            }
         }
 
         return athletes;

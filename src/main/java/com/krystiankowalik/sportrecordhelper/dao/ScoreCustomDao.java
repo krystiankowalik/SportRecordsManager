@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Repository
 public class ScoreCustomDao{
 
-
     private final EntityManager entityManager;
 
     @Autowired

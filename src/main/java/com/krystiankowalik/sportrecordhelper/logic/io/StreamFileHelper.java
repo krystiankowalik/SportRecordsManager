@@ -1,5 +1,6 @@
 package com.krystiankowalik.sportrecordhelper.logic.io;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -10,8 +11,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage.*;
+
 @Service
 public final class StreamFileHelper implements FileHelper {
+
+    private final Logger logger = Logger.getLogger(this.getClass());
+
 
     @Override
     public List<String> readAllLines(Path filePath) {
@@ -19,9 +25,9 @@ public final class StreamFileHelper implements FileHelper {
         List<String> lines = null;
 
         if (!Files.exists(filePath)) {
-//            Error.print(Error.NO_SUCH_FILE, filePath.toAbsolutePath().toString(), true);
+            logger.error(NO_SUCH_FILE + filePath.toAbsolutePath().toString());
         } else if (!Files.isRegularFile(filePath)) {
-//            Error.print(Error.NOT_A_FILE, filePath.toAbsolutePath().toString(), true);
+            logger.error(NOT_A_FILE + filePath.toAbsolutePath().toString());
         } else {
 
             try (Stream<String> linesStream = Files.lines(filePath, Charset.forName("UTF-8"))) {
@@ -40,9 +46,9 @@ public final class StreamFileHelper implements FileHelper {
         List<Path> files = null;
 
         if (!Files.exists(directoryPath)) {
-//            Error.print(Error.NO_SUCH_DIRECTORY, directoryPath.toAbsolutePath().toString(), true);
+            logger.error(NO_SUCH_DIRECTORY + directoryPath.toAbsolutePath().toString());
         } else if (!Files.isDirectory(directoryPath)) {
-//            Error.print(Error.NOT_A_DIRECTORY, ": " + directoryPath.toAbsolutePath().toString(), true);
+            logger.error(NOT_A_DIRECTORY + directoryPath.toAbsolutePath().toString());
         } else {
 
             try {

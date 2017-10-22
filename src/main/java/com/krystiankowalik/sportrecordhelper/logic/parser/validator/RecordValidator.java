@@ -1,5 +1,6 @@
 package com.krystiankowalik.sportrecordhelper.logic.parser.validator;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -7,37 +8,39 @@ import java.time.format.DateTimeParseException;
 
 import static com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser.RECORD_DELIMITER;
 import static com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser.RECORD_MEMBERS_COUNT;
+import static com.krystiankowalik.sportrecordhelper.logic.parser.error.ErrorMessage.*;
 
 @Component
 public final class RecordValidator {
 
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     public boolean isValidRecordLine(String string) {
 
         if (!isPipeDelimited(string)) {
-//            Error.print(Error.MISSING_DELIMITER, "in: " + string,false);
+            logger.error(MISSING_DELIMITER + "in: " + string);
             return false;
         }
 
         final String[] splitLine = string.split(RECORD_DELIMITER);
 
         if (!isValidMembersCount(splitLine, RECORD_MEMBERS_COUNT)) {
-//            Error.print(Error.INVALID_MEMBER_COUNT, ": " + splitLine.length + "for token: " + string + " expected count: " + RECORD_MEMBERS_COUNT,false);
+            logger.error(INVALID_MEMBER_COUNT + ": " + splitLine.length + " in: " + string + " expected count: " + RECORD_MEMBERS_COUNT);
             return false;
         }
 
         if (!isValidDateFormat(splitLine[0])) {
-//            Error.print(Error.INVALID_DATE_FORMAT, "in: " + string,false);
+            logger.error(INVALID_DATE_FORMAT + "in " + splitLine[0]);
             return false;
         }
 
         if (!isInteger(splitLine[1])) {
-//            Error.print(Error.NOT_AN_INTEGER, string,false);
+            logger.error(NOT_AN_INTEGER + ": " + splitLine[1]);
             return false;
         }
 
         if (!isNumber(splitLine[2])) {
-//            Error.print(Error.NOT_A_DECIMAL, string,false);
+            logger.error(NOT_A_DECIMAL + ": " + splitLine[2]);
             return false;
         }
 
@@ -45,14 +48,17 @@ public final class RecordValidator {
     }
 
     private boolean isValidMembersCount(String[] splitRecordLine, int recordMembersCount) {
-        return splitRecordLine.length == recordMembersCount;
+        return splitRecordLine != null && splitRecordLine.length == recordMembersCount;
     }
 
     private boolean isPipeDelimited(String string) {
-        return string.matches("(.*" + RECORD_DELIMITER + ".*){2}");
+        return string != null && string.matches("(.*" + RECORD_DELIMITER + ".*){2}");
     }
 
     private boolean isValidDateFormat(String string) {
+        if (string == null) {
+            return false;
+        }
         try {
             LocalDate.parse(string);
             return true;
@@ -62,11 +68,11 @@ public final class RecordValidator {
     }
 
     private boolean isInteger(String string) {
-        return string.matches("^[1-9]\\d+$");
+        return string != null && string.matches("^[1-9]\\d+$");
     }
 
     private boolean isNumber(String string) {
-        return string.matches("^[1-9]\\d*(\\.\\d+)?$");
+        return string != null && string.matches("^[1-9]\\d*(\\.\\d+)?$");
     }
 
 
