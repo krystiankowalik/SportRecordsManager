@@ -2,19 +2,35 @@ package com.krystiankowalik.sportrecordhelper.util;
 
 public class Constants {
 
-    public static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
-    public static final String PROPERTY_NAME_DATABASE_PASSWORD = "db.password";
-    public static final String PROPERTY_NAME_DATABASE_URL = "db.url";
-    public static final String PROPERTY_NAME_DATABASE_USERNAME = "db.username";
-
-    public static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
-    public static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-    public static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-
-    public static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
-
-
     public static final String EMPTY = "";
+
+    public static final String READ_FILE = "-f";
+    public static final String READ_DIRECTORY = "-d";
+    public static final String HELP = "-h";
+    public static final String HELP_VERBOSE = "--getHelpContents";
+
+
+    public static String getHelpContents() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("In order to read files, use the following syntax:");
+        sb.append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("| -option | source |");
+        sb.append(System.lineSeparator());
+        sb.append("| -f | path to file | - to read a single file");
+        sb.append(System.lineSeparator());
+        sb.append("| -d | path to directory | - to read a all files in the directory");
+        sb.append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+        sb.append("for example: -f dane.txt");
+        sb.append(System.lineSeparator());
+        sb.append(System.lineSeparator());
+
+        sb.append("Enjoy :)");
+
+        return sb.toString();
+    }
 
     private Constants() {
     }

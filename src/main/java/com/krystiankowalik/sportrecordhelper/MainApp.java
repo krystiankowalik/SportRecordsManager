@@ -9,7 +9,7 @@ public final class MainApp {
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class);
 
-        context.getBean(Control.class).run();
+        context.getBean(Control.class).run(args);
 
     }
 }
