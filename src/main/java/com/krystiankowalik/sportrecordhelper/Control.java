@@ -6,6 +6,7 @@ import com.krystiankowalik.sportrecordhelper.logic.io.FileHelper;
 import com.krystiankowalik.sportrecordhelper.logic.parser.AthleteParser;
 import com.krystiankowalik.sportrecordhelper.logic.parser.BatchAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,8 @@ public class Control {
     private ScoreCustomDao scoreCustomDao;
     private AthleteCustomDao athleteCustomDao;
 
+    private final Logger logger = Logger.getLogger(this.getClass());
+
     @Autowired
     public Control(FileHelper fileHelper, AthleteParser athleteParser, BatchAthleteParser batchAthleteParser, ScoreCustomDao scoreCustomDao, AthleteCustomDao athleteCustomDao) {
         this.fileHelper = fileHelper;
@@ -33,6 +36,7 @@ public class Control {
     }
 
     public void run() {
+        logger.error("sample error");
 
         List<Athlete> athletes = batchAthleteParser.parseAthletes(fileHelper.readAllLines(Paths.get("/home/wd40/Public/dane.txt")));
         athleteCustomDao.save(athletes);
@@ -49,5 +53,6 @@ public class Control {
 
         List<Athlete> athleteList = athleteCustomDao.findAll();
         athleteList.forEach(a -> System.out.println(a.getName() + " time: " + athleteCustomDao.getThousandMetersAthleteAverageByAthleteId(a.getId())));
+
     }
 }
