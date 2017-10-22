@@ -4,7 +4,6 @@ import com.krystiankowalik.sportrecordhelper.dao.AthleteCustomDao;
 import com.krystiankowalik.sportrecordhelper.dao.ScoreCustomDao;
 import com.krystiankowalik.sportrecordhelper.error.ErrorMessage;
 import com.krystiankowalik.sportrecordhelper.logic.io.FileHelper;
-import com.krystiankowalik.sportrecordhelper.logic.parser.athlete.AthleteParser;
 import com.krystiankowalik.sportrecordhelper.logic.parser.batch.BatchAthleteParser;
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.apache.log4j.Logger;
@@ -25,7 +24,6 @@ import static com.krystiankowalik.sportrecordhelper.util.Constants.*;
 public class Control {
 
     private final FileHelper fileHelper;
-    private final AthleteParser athleteParser;
     private final BatchAthleteParser batchAthleteParser;
     private final ScoreCustomDao scoreCustomDao;
     private final AthleteCustomDao athleteCustomDao;
@@ -33,9 +31,8 @@ public class Control {
     private final Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
-    public Control(FileHelper fileHelper, AthleteParser athleteParser, BatchAthleteParser batchAthleteParser, ScoreCustomDao scoreCustomDao, AthleteCustomDao athleteCustomDao) {
+    public Control(FileHelper fileHelper, BatchAthleteParser batchAthleteParser, ScoreCustomDao scoreCustomDao, AthleteCustomDao athleteCustomDao) {
         this.fileHelper = fileHelper;
-        this.athleteParser = athleteParser;
         this.batchAthleteParser = batchAthleteParser;
         this.scoreCustomDao = scoreCustomDao;
         this.athleteCustomDao = athleteCustomDao;
