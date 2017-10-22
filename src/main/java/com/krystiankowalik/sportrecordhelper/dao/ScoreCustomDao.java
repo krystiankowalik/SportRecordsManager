@@ -1,15 +1,13 @@
 package com.krystiankowalik.sportrecordhelper.dao;
 
-import com.krystiankowalik.sportrecordhelper.model.Score;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.List;
 
 @Repository
-public class ScoreCustomDao {
+public class ScoreCustomDao{
 
 
     private final EntityManager entityManager;

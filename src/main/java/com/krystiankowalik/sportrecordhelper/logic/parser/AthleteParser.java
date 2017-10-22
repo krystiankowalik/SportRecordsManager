@@ -8,7 +8,6 @@ import java.util.List;
 @Service
 public interface AthleteParser {
 
-    //String ATHLETE_DELIMITER = "-";
     String RECORD_DELIMITER = "\\|";
 
     int RECORD_MEMBERS_COUNT = 3;

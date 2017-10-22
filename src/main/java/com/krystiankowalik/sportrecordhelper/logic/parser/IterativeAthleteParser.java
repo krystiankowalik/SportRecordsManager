@@ -24,69 +24,6 @@ public final class IterativeAthleteParser implements AthleteParser {
         this.athleteValidator = athleteValidator;
     }
 
-    public RecordValidator getRecordValidator() {
-        return recordValidator;
-    }
-
-    public AthleteValidator getAthleteValidator() {
-        return athleteValidator;
-    }
-
-    /*public IterativeAthleteParser() {
-        this.recordValidator = new RecordValidator();
-        this.athleteValidator = new AthleteValidator();
-    }*/
-
-   /* @Override
-    public Athletes parseAthletes(List<String> allLines) {
-
-        List<String> singleAthleteLines = new ArrayList<>();
-        Athletes athletes = new Athletes();
-
-        if (allLines != null) {
-
-            skipEmptyLines(allLines);
-
-            allLines.forEach(line -> {
-                if (!line.trim().equals(ATHLETE_DELIMITER)) {
-                    singleAthleteLines.add(line.trim());
-                } else {
-                    addAthleteIfValid(parseAthlete(singleAthleteLines), athletes, singleAthleteLines);
-                    singleAthleteLines.clear();
-                }
-            });
-
-            addAthleteIfValid(parseAthlete(singleAthleteLines), athletes, singleAthleteLines);
-
-
-        }
-
-
-        return athletes;
-
-    }
-
-    private void skipEmptyLines(List<String> lines) {
-        for (int i = 0; i < lines.size(); ++i) {
-            if (lines.get(i).trim().equals(EMPTY)) {
-                lines.remove(i);
-                --i;
-                if (lines.size() == 0) {
-                    break;
-                }
-            }
-        }
-    }*/
-
-    /*private void addAthleteIfValid(Athlete athlete, Athletes athletes, List<String> singleAthleteLines) {
-        if (athlete.isValid()) {
-            athletes.add(athlete);
-        } else {
-            Error.print(Error.PARSING_ERROR, singleAthleteLines.toString() + "\n", false);
-        }
-    }*/
-
-
     public Athlete parseAthlete(List<String> singleAthleteLines) {
         Athlete athlete = new Athlete();
 

@@ -2,21 +2,22 @@ package com.krystiankowalik.sportrecordhelper.dao;
 
 import com.krystiankowalik.sportrecordhelper.model.Athlete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.text.Bidi;
 import java.util.List;
 
 @Repository
-public class AthleteCustomDao {
+public class AthleteCustomDao{
 
     private final EntityManager entityManager;
+    private final JpaRepository<Athlete, Integer> jpaRepository;
 
     @Autowired
-    public AthleteCustomDao(EntityManager entityManager) {
+    public AthleteCustomDao(EntityManager entityManager, JpaRepository<Athlete, Integer> jpaRepository) {
         this.entityManager = entityManager;
+        this.jpaRepository = jpaRepository;
     }
 
     public List<String> findTopCountries(int topCount) {
@@ -43,8 +44,14 @@ public class AthleteCustomDao {
     }
 
     public List<Athlete> findAll() {
-        return entityManager.createQuery("SELECT a " +
-                " FROM athletes a", Athlete.class)
-                .getResultList();
+        return jpaRepository.findAll();
+    }
+
+    public Athlete save(Athlete athlete) {
+        return jpaRepository.save(athlete);
+    }
+
+    public List<Athlete> save(List<Athlete> athletes) {
+        return jpaRepository.save(athletes);
     }
 }

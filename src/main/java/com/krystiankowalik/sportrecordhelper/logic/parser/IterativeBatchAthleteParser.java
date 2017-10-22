@@ -24,7 +24,6 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
     public List<Athlete> parseAthletes(List<String> lines) {
 
         List<Athlete> athletes = new ArrayList<>();
-
         List<String> singleAthletesLines = new ArrayList<>();
 
         if (lines != null) {
@@ -56,4 +55,5 @@ public class IterativeBatchAthleteParser implements BatchAthleteParser {
             }
         }
     }
+
 }
