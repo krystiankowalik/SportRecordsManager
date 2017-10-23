@@ -7,7 +7,7 @@ public class Constants {
     public static final String READ_FILE = "-f";
     public static final String READ_DIRECTORY = "-d";
     public static final String HELP = "-h";
-    public static final String HELP_VERBOSE = "--getHelpContents";
+    public static final String HELP_VERBOSE = "--help";
 
 
     public static String getHelpContents() {
